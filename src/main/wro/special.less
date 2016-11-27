@@ -1,0 +1,17 @@
+@default-width: 50px;
+@default-height: 50px;
+@default-font-size: 10px;
+
+.btn-sq-custom(@width: @default-width, @height: @default-width, @font-size: @default-font-size) {
+	width:@width !important;
+	height:@height !important;
+	font-size:@font-size !important;
+}
+
+.btn-sq-lg {
+	.btn-sq-custom(150px, 150px, 25px);
+}
+
+.btn-sq-md {
+	.btn-sq-custom(100px, 100px, 15px);
+}

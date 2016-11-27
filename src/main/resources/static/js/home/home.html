@@ -1,0 +1,69 @@
+<h1>Kalah Game</h1>
+<div>
+	<p>Welcome {{controller.user}}!</p>
+</div>
+</br>
+<div>
+	<p>Player {{controller.gameBoard.currentPlayerId}}'s turn</p>
+</div>
+<div>
+	<p>{{controller.message}}</p>
+</div>
+</br>
+<div class="row text-center">
+	<div class="col-md-2">
+		<a class="btn btn-info btn-sq-lg" disabled>
+			Kalah 2 - {{controller.gameBoard.kalahMap['2'].numOfStones}}
+		</a>
+	</div>
+	
+	<div class="col-md-7">
+		<div class="row center-block">
+			<a data-ng-click="controller.playFnc(2, 5);" class="btn btn-primary btn-sq-md">
+				House 6 - {{controller.gameBoard.pitMap['2'][5].numOfStones}}
+			</a>
+			<a data-ng-click="controller.playFnc(2, 4);" class="btn btn-primary btn-sq-md">
+				House 5 - {{controller.gameBoard.pitMap['2'][4].numOfStones}}
+			</a>
+			<a data-ng-click="controller.playFnc(2, 3);" class="btn btn-primary btn-sq-md">
+				House 4 - {{controller.gameBoard.pitMap['2'][3].numOfStones}}
+			</a>
+			<a data-ng-click="controller.playFnc(2, 2);" class="btn btn-primary btn-sq-md">
+				House 3 - {{controller.gameBoard.pitMap['2'][2].numOfStones}}
+			</a>
+			<a data-ng-click="controller.playFnc(2, 1);" class="btn btn-primary btn-sq-md">
+				House 2 - {{controller.gameBoard.pitMap['2'][1].numOfStones}}
+			</a>
+			<a data-ng-click="controller.playFnc(2, 0);" class="btn btn-primary btn-sq-md">
+				House 1 - {{controller.gameBoard.pitMap['2'][0].numOfStones}}
+			</a>
+		</div>
+		<br>
+		<div class="row center-block">
+			<a data-ng-click="controller.playFnc(1, 0);" class="btn btn-primary btn-sq-md">
+				House 1 - {{controller.gameBoard.pitMap['1'][0].numOfStones}}
+			</a>
+			<a data-ng-click="controller.playFnc(1, 1);" class="btn btn-primary btn-sq-md">
+				House 2 - {{controller.gameBoard.pitMap['1'][1].numOfStones}}
+			</a>
+			<a data-ng-click="controller.playFnc(1, 2);" class="btn btn-primary btn-sq-md">
+				House 3 - {{controller.gameBoard.pitMap['1'][2].numOfStones}}
+			</a>
+			<a data-ng-click="controller.playFnc(1, 3);" class="btn btn-primary btn-sq-md">
+				House 4 - {{controller.gameBoard.pitMap['1'][3].numOfStones}}
+			</a>
+			<a data-ng-click="controller.playFnc(1, 4);" class="btn btn-primary btn-sq-md">
+				House 5 - {{controller.gameBoard.pitMap['1'][4].numOfStones}}
+			</a>
+			<a data-ng-click="controller.playFnc(1, 5);" class="btn btn-primary btn-sq-md">
+				House 6 - {{controller.gameBoard.pitMap['1'][5].numOfStones}}
+			</a>
+		</div>
+	</div>
+	
+	<div class="col-md-2 centered">
+		<a class="btn btn-info btn-sq-lg" disabled>
+			Kalah 1 - {{controller.gameBoard.kalahMap['1'].numOfStones}}
+		</a>
+	</div>
+</div>
