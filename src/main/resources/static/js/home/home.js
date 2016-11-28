@@ -22,7 +22,7 @@ angular.module('home', []).controller('home', function($scope, $http) {
 	            pitId: pitId
 	        };
 			
-			$http.post('/game/play', data, config)
+			$http.post('/currentGame/play', data, config)
 				.then(function successCallback(response) {
 					self.gameBoard = response.data;
 		        	self.message='';
@@ -34,9 +34,6 @@ angular.module('home', []).controller('home', function($scope, $http) {
 		
 	var getGameFnc = function() {
 		if(self.gameBoard.currentPlayerId==-1) {
-			/*var dataJ = $.param({
-	            user: self.user
-	        });*/
 			
 			var data = self.user;
 	            

@@ -32,21 +32,20 @@ public class GameController {
 						.body(gameService.getGame(user));
 	}
 	
-	@RequestMapping(value = "/game/play", method = RequestMethod.POST)
+	@RequestMapping(value = "/currentGame/play", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity play(@RequestBody Move move) {
 		
 		ValidationResult validationResult = inputValidatorChain.validateInput(gameService.getUserBoard(move.getUser()), move);
 		if(!validationResult.getMessage().equals(InputValidatorChain.VALID_MSG)) {
-			return ResponseEntity//<String>(validationResult, HttpStatus.BAD_REQUEST);
+			return ResponseEntity
 					.status(HttpStatus.BAD_REQUEST)
 					.body(validationResult);
-			//JSONObject.stringToValue("\\{validationResult:" + validationResult + "\\}")
 		}
 		
-		GameBoard afterPlay = gameService.play(move);
+		GameBoard played = gameService.play(move);
 		
-		if(afterPlay==null) {
+		if(played==null) {
 			return ResponseEntity
 					.status(HttpStatus.NOT_FOUND)
 					.build();
@@ -54,7 +53,7 @@ public class GameController {
 		
 		return ResponseEntity
 				.status(HttpStatus.ACCEPTED)
-				.body(gameService.play(move));
+				.body(played);
 		
 	}	
 }
