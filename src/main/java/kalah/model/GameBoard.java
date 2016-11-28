@@ -1,42 +1,21 @@
 package kalah.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-
-
 public class GameBoard {
-	
-	private enum Id{
-		_1(1), _2(2);
-		
-		private int val;
-		private Id(int val) {
-			this.val=val;
-		}
-		public int getVal() {
-			return val;
-		}
-	}
-	
+
 	private int currentPlayerId;
-	private ArrayList<Player> playerList;
 	private HashMap<Integer, Kalah> kalahMap;
 	private HashMap<Integer, Pit[]> pitMap;
 	
 	public GameBoard(int initialStoneCount) {
-		currentPlayerId=Id._1.getVal();
-		Player p1 = new Player(Id._1.getVal());
-		Player p2 = new Player(Id._2.getVal());
-		playerList = new ArrayList<Player>();
-		playerList.add(p1);
-		playerList.add(p2);
+		currentPlayerId=Player._1.getId();
 		
 		Kalah k1 = new Kalah(0);
 		Kalah k2 = new Kalah(0);
 		kalahMap = new HashMap<Integer, Kalah>();
-		kalahMap.put(p1.getId(), k1);
-		kalahMap.put(p2.getId(), k2);
+		kalahMap.put(Player._1.getId(), k1);
+		kalahMap.put(Player._2.getId(), k2);
 		
 		//create pits for players 
 		Pit[] arr1 = new Pit[initialStoneCount];
@@ -46,13 +25,13 @@ public class GameBoard {
 			arr2[i] = new Pit(initialStoneCount);
 		}
 		pitMap = new HashMap<Integer, Pit[]>();
-		pitMap.put(p1.getId(), arr1);
-		pitMap.put(p2.getId(), arr2);
+		pitMap.put(Player._1.getId(), arr1);
+		pitMap.put(Player._2.getId(), arr2);
 		
 	}
 	
 	public void changeCurrentPlayer() {
-		this.currentPlayerId=(this.currentPlayerId==Id._1.getVal()) ? Id._2.getVal() : Id._1.getVal();
+		this.currentPlayerId=(this.currentPlayerId==Player._1.getId()) ? Player._2.getId() : Player._1.getId();
 	}
 	
 	public int getKalahCount(int playerId) {
@@ -82,7 +61,7 @@ public class GameBoard {
 				kalahMap.put(currentPlayerId, kalah);
 				numOfStones--;
 				currentPitId=0;
-				currentPlayerId=(currentPlayerId==Id._1.getVal()) ? Id._2.getVal() : Id._1.getVal();
+				currentPlayerId=(currentPlayerId==Player._1.getId()) ? Player._2.getId() : Player._1.getId();
 				pitArr = pitMap.get(currentPlayerId);
 			}		
 		}
@@ -91,11 +70,7 @@ public class GameBoard {
 	public int getCurrentPlayerId() {
 		return currentPlayerId;
 	}
-
-	public ArrayList<Player> getPlayerList() {
-		return playerList;
-	}
-
+	
 	public HashMap<Integer, Kalah> getKalahMap() {
 		return kalahMap;
 	}

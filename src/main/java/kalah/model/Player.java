@@ -1,16 +1,13 @@
 package kalah.model;
 
-public class Player {
-
-	private int id;
+public enum Player {
+	_1(1), _2(2);
 	
-	public Player(int id) {
-		super();
-		this.id = id;
+	private int id;
+	private Player(int id) {
+		this.id=id;
 	}
-
 	public int getId() {
 		return id;
 	}
-	
 }
