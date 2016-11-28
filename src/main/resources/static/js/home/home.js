@@ -13,6 +13,16 @@ angular.module('home', []).controller('home', function($scope, $http) {
 	
 	self.gameBoard = {currentPlayerId: -1};
 	
+	var checkIfGameEnded = function() {
+		if(self.gameBoard.gameEnded) {
+			self.gameBoard.currentPlayerId=-1;
+			if(self.gameBoard.kalahMap['1'].numOfStones > self.gameBoard.kalahMap['2'].numOfStones)
+				self.message='PLAYER 1 WON';
+			else
+				self.message='PLAYER 2 WON';
+		}
+	}
+	
 	self.playFnc = function(playerId, pitId) {
 		console.log(playerId + ' ' + pitId);
 		if(self.gameBoard.currentPlayerId!=-1) {
@@ -26,6 +36,7 @@ angular.module('home', []).controller('home', function($scope, $http) {
 				.then(function successCallback(response) {
 					self.gameBoard = response.data;
 		        	self.message='';
+					checkIfGameEnded();
 				  }, function errorCallback(response) {
 					self.message=response.data.message;
 				  });	
@@ -49,7 +60,8 @@ angular.module('home', []).controller('home', function($scope, $http) {
 			$http.post('/currentGame', data, config)
 				.then(function successCallback(response) {
 					self.gameBoard = response.data;
-		        	self.message='';
+		        	self.message=' ';
+					checkIfGameEnded();
 				  }, function errorCallback(response) {
 					self.message=response.data.message;
 				  });	

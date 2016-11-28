@@ -7,6 +7,7 @@ import kalah.model.Section.SectionType;
 
 public class GameBoard {
 
+	private boolean gameEnded;
 	private int currentPlayerId;
 	private HashMap<Integer, Section> kalahMap;
 	private HashMap<Integer, Section[]> pitMap;
@@ -92,4 +93,11 @@ public class GameBoard {
 		return boardSections;
 	}	
 	
+	public boolean isGameEnded() {
+		return gameEnded;
+	}
+	
+	public void setGameEnded(boolean gameEnded) {
+		this.gameEnded=gameEnded;
+	}
 }
