@@ -10,10 +10,6 @@ angular
 						templateUrl : 'js/home/home.html',
 						controller : 'home',
 						controllerAs : 'controller'
-					}).when('/message', {
-						templateUrl : 'js/message/message.html',
-						controller : 'message',
-						controllerAs : 'controller'
 					}).when('/login', {
 						templateUrl : 'js/navigation/login.html',
 						controller : 'navigation',
