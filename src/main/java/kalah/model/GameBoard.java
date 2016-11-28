@@ -56,6 +56,14 @@ public class GameBoard {
 		return opposite;
 	}
 	
+	public int getPlayerStoneCountInPits(int playerId) {
+		int count = 0;
+		for (Section s: pitMap.get(playerId)) {
+			count+=s.getNumOfStones();
+		}
+		return count;
+	}
+	
 	public void changeCurrentPlayer() {
 		this.currentPlayerId=(this.currentPlayerId==Player._1.getId()) ? Player._2.getId() : Player._1.getId();
 	}

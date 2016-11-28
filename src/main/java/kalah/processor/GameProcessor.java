@@ -37,6 +37,9 @@ public class GameProcessor {
 		if(lastSection.isKalah()) {
 			// Check the last added seed is added into kalah and if so give another turn for current user.
 			if(lastSection.getPlayer().getId()!=gameBoard.getCurrentPlayerId())
+					/*&& gameBoard.getPlayerStoneCountInPits(lastSection.getPlayer().getId())>0) ||
+					(lastSection.getPlayer().getId()==gameBoard.getCurrentPlayerId() 
+					&& gameBoard.getPlayerStoneCountInPits(gameBoard.getCurrentPlayerId())>0))*/
 				gameBoard.changeCurrentPlayer();
 		} else {
 			// Check the last added seed is added into an empty house and opposite house is filled with seed or seeds.
@@ -51,6 +54,10 @@ public class GameProcessor {
 				gameBoard.changeCurrentPlayer();
 			}
 		}
+		
+		// Check if current user can play turn.
+		if(gameBoard.getPlayerStoneCountInPits(gameBoard.getCurrentPlayerId())==0)
+			gameBoard.changeCurrentPlayer();
 	}
 
 }
