@@ -8,7 +8,7 @@ import kalah.model.Section;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GameplayProcessor {
+public class GameProcessor {
 
 	public void process(GameBoard gameBoard, int playerId, int pitId) {
 		Section[] pitArr = gameBoard.getPitMap().get(playerId);

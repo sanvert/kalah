@@ -1,13 +1,10 @@
-<h1>Kalah Game</h1>
+<h1>Kalah Game - Welcome {{controller.user}}</h1>
 <div>
-	<p>Welcome {{controller.user}}!</p>
+	<button type="button" class="btn btn-primary" data-ng-click="controller.newGame();">New Game</button>	
 </div>
 </br>
 <div>
-	<p>Player {{controller.gameBoard.currentPlayerId}}'s turn</p>
-</div>
-<div>
-	<p>{{controller.message}}</p>
+	<h4>Player {{controller.gameBoard.currentPlayerId}}'s turn. {{controller.message}}</h4>
 </div>
 </br>
 <div class="row text-center">

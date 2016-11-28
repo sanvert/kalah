@@ -32,11 +32,20 @@ angular.module('home', []).controller('home', function($scope, $http) {
 		}
 	}
 		
+	self.newGame = function() {
+		var data = self.user;      
+		$http.post('/newGame', data, config)
+			.then(function successCallback(response) {
+				self.gameBoard = response.data;
+	        	self.message='';
+			  }, function errorCallback(response) {
+				self.message=response.data.message;
+			  });	
+	}
+	
 	var getGameFnc = function() {
-		if(self.gameBoard.currentPlayerId==-1) {
-			
-			var data = self.user;
-	            
+		if(self.gameBoard.currentPlayerId==-1) {			
+			var data = self.user;	            
 			$http.post('/currentGame', data, config)
 				.then(function successCallback(response) {
 					self.gameBoard = response.data;

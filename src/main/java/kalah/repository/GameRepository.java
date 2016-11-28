@@ -11,12 +11,12 @@ public class GameRepository {
 
 	private static HashMap<String, GameBoard> gamesInMemory = new HashMap<String, GameBoard>();
 	
-	public GameBoard findGameBoard(String boardId) {
-		return gamesInMemory.get(boardId);
+	public GameBoard findGameBoard(String userId) {
+		return gamesInMemory.get(userId);
 	}
 	
-	public void insertGameBoard(String boardId, GameBoard board) {
-		if(boardId != null && board!=null)
-			gamesInMemory.put(boardId, board);
+	public void insertGameBoard(String userId, GameBoard board) {
+		if(userId != null && board!=null)
+			gamesInMemory.put(userId, board);
 	}
 }

@@ -24,6 +24,14 @@ public class GameController {
 	@Autowired
 	private InputValidatorChain inputValidatorChain;
 	
+	@RequestMapping(value = "/newGame", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public ResponseEntity<GameBoard> newGame(@RequestBody String user) {
+		return ResponseEntity
+						.status(HttpStatus.ACCEPTED)
+						.body(gameService.newGame(user));
+	}
+	
 	@RequestMapping(value = "/currentGame", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public ResponseEntity<GameBoard> getGame(@RequestBody String user) {
@@ -36,7 +44,7 @@ public class GameController {
 	@ResponseBody
 	public ResponseEntity play(@RequestBody Move move) {
 		
-		ValidationResult validationResult = inputValidatorChain.validateInput(gameService.getUserBoard(move.getUser()), move);
+		ValidationResult validationResult = inputValidatorChain.validateInput(gameService.getGame(move.getUser()), move);
 		if(!validationResult.getMessage().equals(InputValidatorChain.VALID_MSG)) {
 			return ResponseEntity
 					.status(HttpStatus.BAD_REQUEST)
