@@ -1,5 +1,7 @@
 package kalah.model;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class Section {
 
 	public enum SectionType {
@@ -7,13 +9,13 @@ public class Section {
 	}
 	
 	private int id;
-	private int numOfStones;
+	private AtomicInteger numOfStones;
 	private SectionType type;
 	public Player player;
 	
 	public Section(int id, int numOfStones, SectionType type, Player player) {
 		this.id = id;
-		this.numOfStones = numOfStones;
+		this.numOfStones = new AtomicInteger(numOfStones);
 		this.type = type;
 		this.player = player;
 	}
@@ -23,11 +25,11 @@ public class Section {
 	}
 
 	public int getNumOfStones() {
-		return numOfStones;
+		return numOfStones.get();
 	}
 
 	public void setNumOfStones(int numOfStones) {
-		this.numOfStones = numOfStones;
+		this.numOfStones = new AtomicInteger(numOfStones);
 	}
 	
 	public Player getPlayer() {
@@ -35,15 +37,19 @@ public class Section {
 	}
 	
 	public void setCountToZero() {
-		this.numOfStones=0;
+		this.numOfStones.set(0);
+	}
+	
+	public void addStones(int delta) {
+		this.numOfStones.addAndGet(delta);
 	}
 	
 	public void increaseCount() {
-		this.numOfStones++;
+		this.numOfStones.incrementAndGet();
 	}
 	
 	public void decreaseCount() {
-		this.numOfStones--;
+		this.numOfStones.decrementAndGet();
 	}
 
 	public boolean isKalah() {

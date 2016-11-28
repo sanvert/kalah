@@ -11,34 +11,13 @@ import org.springframework.stereotype.Component;
 public class GameplayProcessor {
 
 	public void process(GameBoard gameBoard, int playerId, int pitId) {
-		int currentPlayerId = playerId;
-		//int currentPitId = pitId+1;
-
-		Section[] pitArr = gameBoard.getPitMap().get(currentPlayerId);
+		Section[] pitArr = gameBoard.getPitMap().get(playerId);
 		int numOfStones = pitArr[pitId].getNumOfStones();
 		pitArr[pitId].setCountToZero();
 		
-		/*while(numOfStones>0) {
-			for(int i = currentPitId; i<pitArr.length && numOfStones>0;i++) {
-				pitArr[i].increaseCount();
-				lastProcessedElm=pitArr[i];
-				numOfStones--;
-			}
-			
-			if(numOfStones>0) {
-				Section kalah = gameBoard.getKalahMap().get(currentPlayerId);
-				kalah.increaseCount();
-				gameBoard.getKalahMap().put(currentPlayerId, kalah);
-				lastProcessedElm=kalah;
-				numOfStones--;
-				currentPitId=0;
-				currentPlayerId=(currentPlayerId==Player._1.getId()) ? Player._2.getId() : Player._1.getId();
-				pitArr = gameBoard.getPitMap().get(currentPlayerId);
-			}		
-		}*/
-		
 		boolean startProcess = false;
 		Section lastSection = null;
+		//Iterate over gameboard with guava cyclic iterator.
 		Iterator<Section> cyclicIterator = jersey.repackaged.com.google.common.collect.Iterators.cycle(gameBoard.getBoardSections());
 		while(numOfStones>0) {
 			lastSection = cyclicIterator.next();
@@ -49,10 +28,29 @@ public class GameplayProcessor {
 				startProcess=true;
 			}
 		}
+		
+		if(lastSection != null)
+			checkLastProcessedSectionAndUpdateForNewTurn(gameBoard, lastSection);
 	}
 	
-	private void processAfterMove(GameBoard gameBoard) {
-		
+	private void checkLastProcessedSectionAndUpdateForNewTurn(GameBoard gameBoard, Section lastSection) {
+		if(lastSection.isKalah()) {
+			// Check the last added seed is added into kalah and if so give another turn for current user.
+			if(lastSection.getPlayer().getId()!=gameBoard.getCurrentPlayerId())
+				gameBoard.changeCurrentPlayer();
+		} else {
+			// Check the last added seed is added into an empty house and opposite house is filled with seed or seeds.
+			Section oppositeSection = gameBoard.getOppositeSection(lastSection);
+			if(lastSection.getPlayer().getId() == gameBoard.getCurrentPlayerId()
+					&& lastSection.getNumOfStones()==1 
+					&& oppositeSection.getNumOfStones()>0) {
+				gameBoard.getKalahMap().get(gameBoard.getCurrentPlayerId()).addStones(lastSection.getNumOfStones() + oppositeSection.getNumOfStones());
+				lastSection.setCountToZero();
+				oppositeSection.setCountToZero();
+			} else {
+				gameBoard.changeCurrentPlayer();
+			}
+		}
 	}
 
 }

@@ -20,7 +20,7 @@ public class GameBoard {
 		boardSections = new LinkedHashSet<Section>();
 
 		int initialKalahStoneCount = 0;
-		//Player 1 side
+		//Player 1 side of the board.
 		Section kalah1 = new Section(Player._1.getId(), initialKalahStoneCount,  SectionType.KALAH, Player._1);	
 		kalahMap.put(Player._1.getId(), kalah1);		
 		Section[] arr1 = new Section[initialStoneCount];
@@ -32,7 +32,7 @@ public class GameBoard {
 		pitMap.put(Player._1.getId(), arr1);		
 		boardSections.add(kalah1);
 
-		//Player 2 side
+		//Player 2 side of the board.
 		Section kalah2 = new Section(Player._2.getId(), initialKalahStoneCount,  SectionType.KALAH, Player._2);
 		kalahMap.put(Player._2.getId(), kalah2);
 		Section[] arr2 = new Section[initialStoneCount];
@@ -46,6 +46,16 @@ public class GameBoard {
 
 	}
 	
+	public Section getOppositeSection(Section current) {
+		Section opposite = null;
+		if(!current.isKalah()) {
+			int oppositePlayerId = (current.getPlayer().getId()==Player._1.getId()) ? Player._2.getId(): Player._1.getId();
+			Section[] oppositeArr = pitMap.get(oppositePlayerId);
+			opposite = oppositeArr[oppositeArr.length-current.getId()-1];
+		}
+		return opposite;
+	}
+	
 	public void changeCurrentPlayer() {
 		this.currentPlayerId=(this.currentPlayerId==Player._1.getId()) ? Player._2.getId() : Player._1.getId();
 	}
@@ -56,8 +66,7 @@ public class GameBoard {
 	
 	public int getPitCount(int playerId, int pitId) {
 		return pitMap.get(playerId)[pitId].getNumOfStones();
-	}
-	
+	}	
 
 	public int getCurrentPlayerId() {
 		return currentPlayerId;

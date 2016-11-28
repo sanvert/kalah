@@ -46,15 +46,23 @@ public class GameService {
 	
 	public GameBoard play(Move move) {
 		//TO-DO:Put input based lock
-		GameBoard currentBoard = null;
-		String gameId = userGameRepository.findGameBoard(move.getUser());
-		if(gameId != null) {
-			currentBoard = gameRepository.findGameBoard(gameId);
-			if(currentBoard != null) {
-				gameplayProcessor.process(currentBoard, move.getPlayerId(), move.getPitId());
-				gameRepository.insertGameBoard(gameId, currentBoard);
-			}
+		GameBoard currentBoard = getUserBoard(move.getUser());
+
+		if(currentBoard != null) {
+			gameplayProcessor.process(currentBoard, move.getPlayerId(), move.getPitId());
+			//gameRepository.insertGameBoard(gameId, currentBoard);
 		}
+		
 		return currentBoard;
 	}
+	
+	public GameBoard getUserBoard(String user) {
+		GameBoard board = null;
+		String gameId = userGameRepository.findGameBoard(user);
+		if(gameId!=null) {
+			board = gameRepository.findGameBoard(gameId);
+		}
+		return board;
+	}
+	
 }
