@@ -23,13 +23,12 @@ angular.module('home', []).controller('home', function($scope, $http) {
 	        };
 			
 			$http.post('/game/play', data, config)
-		        .success(function (data, status, headers, config) {
-		        	self.gameBoard = data;
+				.then(function successCallback(response) {
+					self.gameBoard = response.data;
 		        	self.message='';
-		        })
-		        .error(function (data, status, header, config) {
-		            self.message=data;
-		        });		
+				  }, function errorCallback(response) {
+					self.message=response.data.message;
+				  });	
 		}
 	}
 		
@@ -41,14 +40,13 @@ angular.module('home', []).controller('home', function($scope, $http) {
 			
 			var data = self.user;
 	            
-			$http.post('/game', data, config)
-		        .success(function (data, status, headers, config) {
-		        	self.gameBoard = data;
+			$http.post('/currentGame', data, config)
+				.then(function successCallback(response) {
+					self.gameBoard = response.data;
 		        	self.message='';
-		        })
-		        .error(function (data, status, header, config) {
-		            self.message=data;
-		        });		
+				  }, function errorCallback(response) {
+					self.message=response.data.message;
+				  });	
 		}
 	}
 	

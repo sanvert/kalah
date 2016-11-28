@@ -2,6 +2,7 @@ package kalah.controller;
 
 import kalah.model.GameBoard;
 import kalah.model.Move;
+import kalah.model.ValidationResult;
 import kalah.service.GameService;
 import kalah.validator.InputValidatorChain;
 
@@ -23,7 +24,7 @@ public class GameController {
 	@Autowired
 	private InputValidatorChain inputValidatorChain;
 	
-	@RequestMapping(value = "/game", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/currentGame", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public ResponseEntity<GameBoard> getGame(@RequestBody String user) {
 		return ResponseEntity
@@ -35,11 +36,12 @@ public class GameController {
 	@ResponseBody
 	public ResponseEntity play(@RequestBody Move move) {
 		
-		String validationResult = inputValidatorChain.validateInput(gameService.getUserBoard(move.getUser()), move);
-		if(!validationResult.equals(InputValidatorChain.VALID_MSG)) {
-			return ResponseEntity
+		ValidationResult validationResult = inputValidatorChain.validateInput(gameService.getUserBoard(move.getUser()), move);
+		if(!validationResult.getMessage().equals(InputValidatorChain.VALID_MSG)) {
+			return ResponseEntity//<String>(validationResult, HttpStatus.BAD_REQUEST);
 					.status(HttpStatus.BAD_REQUEST)
 					.body(validationResult);
+			//JSONObject.stringToValue("\\{validationResult:" + validationResult + "\\}")
 		}
 		
 		GameBoard afterPlay = gameService.play(move);

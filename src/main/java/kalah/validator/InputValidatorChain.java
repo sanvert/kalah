@@ -2,6 +2,7 @@ package kalah.validator;
 
 import kalah.model.GameBoard;
 import kalah.model.Move;
+import kalah.model.ValidationResult;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
@@ -24,8 +25,8 @@ public class InputValidatorChain implements InitializingBean {
 		validator = mv;
 	}
 	
-	public String validateInput(GameBoard gameBoard, Move move) {
-		return validator.validate(gameBoard, move);
+	public ValidationResult validateInput(GameBoard gameBoard, Move move) {
+		return new ValidationResult(validator.validate(gameBoard, move));
 	}
 	
 }
