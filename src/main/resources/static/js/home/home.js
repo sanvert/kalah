@@ -11,9 +11,11 @@ angular.module('home', []).controller('home', function($scope, $http) {
         }
     };
 	
+	self.gameBoard = {currentPlayerId: -1};
+	
 	self.playFnc = function(playerId, pitId) {
 		console.log(playerId + ' ' + pitId);
-		if(self.gameBoard!=undefined) {
+		if(self.gameBoard.currentPlayerId!=-1) {
 			var data = {
 	            user: self.user,
 	            playerId: playerId,
@@ -23,15 +25,16 @@ angular.module('home', []).controller('home', function($scope, $http) {
 			$http.post('/game/play', data, config)
 		        .success(function (data, status, headers, config) {
 		        	self.gameBoard = data;
+		        	self.message='';
 		        })
 		        .error(function (data, status, header, config) {
-		            self.message="ERROR!";
+		            self.message=data;
 		        });		
 		}
 	}
 		
 	var getGameFnc = function() {
-		if(self.gameBoard==undefined) {
+		if(self.gameBoard.currentPlayerId==-1) {
 			/*var dataJ = $.param({
 	            user: self.user
 	        });*/
@@ -41,9 +44,10 @@ angular.module('home', []).controller('home', function($scope, $http) {
 			$http.post('/game', data, config)
 		        .success(function (data, status, headers, config) {
 		        	self.gameBoard = data;
+		        	self.message='';
 		        })
 		        .error(function (data, status, header, config) {
-		            self.message="ERROR!";
+		            self.message=data;
 		        });		
 		}
 	}
