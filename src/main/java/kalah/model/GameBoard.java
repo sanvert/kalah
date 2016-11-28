@@ -1,33 +1,49 @@
 package kalah.model;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
+
+import kalah.model.Section.SectionType;
 
 public class GameBoard {
 
 	private int currentPlayerId;
-	private HashMap<Integer, Kalah> kalahMap;
-	private HashMap<Integer, Pit[]> pitMap;
+	private HashMap<Integer, Section> kalahMap;
+	private HashMap<Integer, Section[]> pitMap;
+	private LinkedHashSet<Section> boardSections;	
 	
 	public GameBoard(int initialStoneCount) {
 		currentPlayerId=Player._1.getId();
 		
-		Kalah k1 = new Kalah(0);
-		Kalah k2 = new Kalah(0);
-		kalahMap = new HashMap<Integer, Kalah>();
-		kalahMap.put(Player._1.getId(), k1);
-		kalahMap.put(Player._2.getId(), k2);
-		
-		//create pits for players 
-		Pit[] arr1 = new Pit[initialStoneCount];
-		Pit[] arr2 = new Pit[initialStoneCount];
+		kalahMap = new HashMap<Integer, Section>();
+		pitMap = new HashMap<Integer, Section[]>();
+		boardSections = new LinkedHashSet<Section>();
+
+		int initialKalahStoneCount = 0;
+		//Player 1 side
+		Section kalah1 = new Section(Player._1.getId(), initialKalahStoneCount,  SectionType.KALAH, Player._1);	
+		kalahMap.put(Player._1.getId(), kalah1);		
+		Section[] arr1 = new Section[initialStoneCount];
 		for(int i = 0; i<initialStoneCount; i++) {
-			arr1[i] = new Pit(initialStoneCount);
-			arr2[i] = new Pit(initialStoneCount);
+			Section pit = new Section(i, initialStoneCount, SectionType.PIT, Player._1);
+			arr1[i]=pit;
+			boardSections.add(pit);
 		}
-		pitMap = new HashMap<Integer, Pit[]>();
-		pitMap.put(Player._1.getId(), arr1);
-		pitMap.put(Player._2.getId(), arr2);
-		
+		pitMap.put(Player._1.getId(), arr1);		
+		boardSections.add(kalah1);
+
+		//Player 2 side
+		Section kalah2 = new Section(Player._2.getId(), initialKalahStoneCount,  SectionType.KALAH, Player._2);
+		kalahMap.put(Player._2.getId(), kalah2);
+		Section[] arr2 = new Section[initialStoneCount];
+		for(int i = 0; i<initialStoneCount; i++) {
+			Section pit = new Section(i, initialStoneCount, SectionType.PIT, Player._2);
+			arr2[i]=pit;
+			boardSections.add(pit);
+		}
+		pitMap.put(Player._2.getId(), arr2);	
+		boardSections.add(kalah2);
+
 	}
 	
 	public void changeCurrentPlayer() {
@@ -42,42 +58,21 @@ public class GameBoard {
 		return pitMap.get(playerId)[pitId].getNumOfStones();
 	}
 	
-	public void playOnPit(int playerId, int pitId) {
-		int currentPlayerId = playerId;
-		Pit[] pitArr = pitMap.get(currentPlayerId);
-		int numOfStones = pitArr[pitId].getNumOfStones();
-		pitArr[pitId].setCountToZero();
-		
-		int currentPitId = pitId+1;
-		while(numOfStones>0) {
-			for(int i = currentPitId; i<pitArr.length && numOfStones>0;i++) {
-				pitArr[i].increaseCount();
-				numOfStones--;
-			}
-			
-			if(numOfStones>0) {
-				Kalah kalah = kalahMap.get(currentPlayerId);
-				kalah.increaseCount();
-				kalahMap.put(currentPlayerId, kalah);
-				numOfStones--;
-				currentPitId=0;
-				currentPlayerId=(currentPlayerId==Player._1.getId()) ? Player._2.getId() : Player._1.getId();
-				pitArr = pitMap.get(currentPlayerId);
-			}		
-		}
-	}
 
 	public int getCurrentPlayerId() {
 		return currentPlayerId;
 	}
 	
-	public HashMap<Integer, Kalah> getKalahMap() {
+	public HashMap<Integer, Section> getKalahMap() {
 		return kalahMap;
 	}
 
-	public HashMap<Integer, Pit[]> getPitMap() {
+	public HashMap<Integer, Section[]> getPitMap() {
 		return pitMap;
+	}
+
+	public LinkedHashSet<Section> getBoardSections() {
+		return boardSections;
 	}	
-	
 	
 }

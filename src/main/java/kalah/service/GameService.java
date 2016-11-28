@@ -5,6 +5,7 @@ import java.util.UUID;
 import kalah.factory.GameFactory;
 import kalah.model.GameBoard;
 import kalah.model.Move;
+import kalah.processor.GameplayProcessor;
 import kalah.repository.GameRepository;
 import kalah.repository.UserGameRepository;
 
@@ -22,6 +23,9 @@ public class GameService {
 	
 	@Autowired
 	private GameFactory gameFactory;
+	
+	@Autowired
+	private GameplayProcessor gameplayProcessor;
 	
 	public GameBoard getGame(String user) {
 		//TO-DO:Put input based lock
@@ -47,7 +51,7 @@ public class GameService {
 		if(gameId != null) {
 			currentBoard = gameRepository.findGameBoard(gameId);
 			if(currentBoard != null) {
-				currentBoard.playOnPit(move.getPlayerId(), move.getPitId());
+				gameplayProcessor.process(currentBoard, move.getPlayerId(), move.getPitId());
 				gameRepository.insertGameBoard(gameId, currentBoard);
 			}
 		}
