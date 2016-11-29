@@ -32,6 +32,8 @@ public class GameProcessor {
 		
 		if(lastSection != null)
 			checkLastProcessedSectionAndUpdateForNewTurn(gameBoard, lastSection);
+		
+		checkIfGameEnded(gameBoard);
 	}
 	
 	private void checkLastProcessedSectionAndUpdateForNewTurn(GameBoard gameBoard, Section lastSection) {
@@ -57,7 +59,6 @@ public class GameProcessor {
 		if(gameBoard.getPlayerStoneCountInPits(gameBoard.getCurrentPlayerId())==0)
 			gameBoard.changeCurrentPlayer();
 		
-		checkIfGameEnded(gameBoard);
 	}
 	
 	private void checkIfGameEnded(GameBoard gameBoard) {

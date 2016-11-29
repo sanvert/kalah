@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
-public class ApplicationTests {
+public class UiApplicationTest  {
 
 	@LocalServerPort
 	private int port;
