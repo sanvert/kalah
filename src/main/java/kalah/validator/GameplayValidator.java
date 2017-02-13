@@ -1,6 +1,6 @@
 package kalah.validator;
 
-import kalah.model.GameBoard;
+import kalah.model.Board;
 import kalah.model.Move;
 
 public abstract class GameplayValidator {
@@ -14,5 +14,5 @@ public abstract class GameplayValidator {
 		this.invalidInputMsg=invalidInputMsg;
 	}
 	
-	abstract String validate(GameBoard gameBoard, Move move);
+	protected abstract String validate(Board board, Move move);
 }

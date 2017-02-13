@@ -1,74 +1,72 @@
 package kalah.service;
 
-import java.util.concurrent.locks.Lock;
-
-import kalah.factory.GameFactory;
-import kalah.model.GameBoard;
+import com.google.common.util.concurrent.Striped;
+import kalah.factory.BoardFactory;
+import kalah.model.Board;
 import kalah.model.Move;
-import kalah.processor.GameProcessor;
-import kalah.repository.GameRepository;
-
+import kalah.processor.BoardProcessor;
+import kalah.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.util.concurrent.Striped;
+import java.util.concurrent.locks.Lock;
 
 @Service
 public class GameService {
 
 	@Autowired
-	private GameRepository gameRepository;
+	private BoardRepository boardRepository;
 
 	@Autowired
-	private GameFactory gameFactory;
+	private BoardFactory boardFactory;
 
 	@Autowired
-	private GameProcessor gameProcessor;
+	private BoardProcessor boardProcessor;
 
 	private final Striped<Lock> STRIPED_LOCK = Striped.lock(2);
 
-	public GameBoard newGame(String user) {
+	public Board newBoard(String generatedBoardId) {
 		// Input based locking mechanism added
-		GameBoard gameBoard = null;
+		Board board = null;
 		try {
-			STRIPED_LOCK.get(user).lock();
-			gameBoard = gameFactory.generateNewGame();
-			gameRepository.insertGameBoard(user, gameBoard);
+			STRIPED_LOCK.get(generatedBoardId).lock();
+			board = boardFactory.generate();
+			boardRepository.insertBoard(generatedBoardId, board);
 		} finally {
-			STRIPED_LOCK.get(user).unlock();
+			STRIPED_LOCK.get(generatedBoardId).unlock();
 		}
-		return gameBoard;
+		return board;
 	}
 
-	public GameBoard getGame(String user) {
+	public Board getBoard(String generatedBoardId) {
 		// Input based locking mechanism added
-		GameBoard gameBoard = null;
+		Board board = null;
 		try {
-			STRIPED_LOCK.get(user).lock();
-			gameBoard = gameRepository.findGameBoard(user);
-			if (gameBoard == null) {
-				gameBoard = gameFactory.generateNewGame();
-				gameRepository.insertGameBoard(user, gameBoard);
+			STRIPED_LOCK.get(generatedBoardId).lock();
+			board = boardRepository.findBoard(generatedBoardId);
+			if (board == null) {
+				board = boardFactory.generate();
+				boardRepository.insertBoard(generatedBoardId, board);
 			}
 		} finally {
-			STRIPED_LOCK.get(user).unlock();
+			STRIPED_LOCK.get(generatedBoardId).unlock();
 		}
 
-		return gameBoard;
+		return board;
 	}
 
-	public GameBoard play(Move move) {
+	public Board play(Move move) {
 		// Input based lock
-		GameBoard currentBoard = null;
+		Board currentBoard = null;
 		try {
 			STRIPED_LOCK.get(move.getUser()).lock();
-			currentBoard = gameRepository.findGameBoard(move.getUser());
+			currentBoard = boardRepository.findBoard(move.getUser());
 
 			if (currentBoard != null) {
-				gameProcessor.process(currentBoard, move.getPlayerId(),
+				boardProcessor.process(currentBoard, move.getPlayerId(),
 						move.getPitId());
 				// Insert updated board
-				gameRepository.insertGameBoard(move.getUser(), currentBoard);
+				boardRepository.insertBoard(move.getUser(), currentBoard);
 			}
 		} finally {
 			STRIPED_LOCK.get(move.getUser()).unlock();

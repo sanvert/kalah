@@ -1,6 +1,6 @@
 package kalah.validator;
 
-import kalah.model.GameBoard;
+import kalah.model.Board;
 import kalah.model.Move;
 
 public class PlayerOrderValidator extends GameplayValidator{
@@ -11,9 +11,9 @@ public class PlayerOrderValidator extends GameplayValidator{
 	}
 
 	@Override
-	String validate(GameBoard gameBoard, Move move) {
-		return (gameBoard.getCurrentPlayerId() == move.getPlayerId()) ? 
-				(this.nextValidator != null) ? this.nextValidator.validate(gameBoard, move) : this.validInputMsg 
+	protected String validate(Board board, Move move) {
+		return (board.getCurrentPlayerId() == move.getPlayerId()) ?
+				(this.nextValidator != null) ? this.nextValidator.validate(board, move) : this.validInputMsg
 				: this.invalidInputMsg;
 	}
 	

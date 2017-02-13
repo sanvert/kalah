@@ -5,7 +5,7 @@ import java.util.LinkedHashSet;
 
 import kalah.model.Section.SectionType;
 
-public class GameBoard {
+public class Board {
 
 	private boolean gameEnded;
 	private int currentPlayerId;
@@ -13,7 +13,7 @@ public class GameBoard {
 	private HashMap<Integer, Section[]> pitMap;
 	private LinkedHashSet<Section> boardSections;	
 	
-	public GameBoard(int initialStoneCount) {
+	public Board(int initialStoneCount) {
 		currentPlayerId=Player._1.getId();
 		
 		kalahMap = new HashMap<Integer, Section>();

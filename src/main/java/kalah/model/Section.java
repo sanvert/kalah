@@ -74,14 +74,13 @@ public class Section {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
+
 		Section other = (Section) obj;
-		if (id != other.id)
-			return false;
-		if (player != other.player)
-			return false;
-		if (type != other.type)
-			return false;
-		return true;
+
+		return (id == other.id) &&
+				(type == other.type) &&
+				(player == other.player);
+
 	}
 
 	

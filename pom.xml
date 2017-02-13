@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>redirect</name>
-	<description>Play Kalah Game</description>
+	<description>Kalah Game 2-Players</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

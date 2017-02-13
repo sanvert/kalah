@@ -1,11 +1,11 @@
 package kalah;
 
 import kalah.controller.GameController;
-import kalah.factory.GameFactory;
-import kalah.processor.GameProcessor;
-import kalah.repository.GameRepository;
+import kalah.factory.BoardFactory;
+import kalah.processor.BoardProcessor;
+import kalah.repository.BoardRepository;
+import kalah.service.GameService;
 import kalah.validator.InputValidatorChain;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -18,6 +18,11 @@ public class UnitTestContextConfiguration {
 	public InputValidatorChain inputValidatorChain() {
 		return new InputValidatorChain();
 	}
+
+	@Bean
+	public GameService gameService() {
+		return new GameService();
+	}
 	
 	@Bean
 	public GameController gameController() {
@@ -25,17 +30,15 @@ public class UnitTestContextConfiguration {
 	}
 	
 	@Bean
-	public GameRepository gameRepository() {
-		return new GameRepository();
+	public BoardRepository boardRepository() { return new BoardRepository(); }
+	
+	@Bean
+	public BoardFactory boardFactory() {
+		return new BoardFactory();
 	}
 	
 	@Bean
-	public GameFactory gameFactory() {
-		return new GameFactory();
-	}
-	
-	@Bean
-	public GameProcessor gameProcessor() {
-		return new GameProcessor();
+	public BoardProcessor boardProcessor() {
+		return new BoardProcessor();
 	}
 }

@@ -1,22 +1,17 @@
 package kalah.controller;
 
-import kalah.model.GameBoard;
+import kalah.model.Board;
 import kalah.model.Move;
 import kalah.model.ValidationResult;
 import kalah.service.GameService;
 import kalah.validator.InputValidatorChain;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RestController()
+@RequestMapping("/api")
 public class GameController {
 
 	@Autowired
@@ -25,36 +20,36 @@ public class GameController {
 	@Autowired
 	private InputValidatorChain inputValidatorChain;
 	
-	@RequestMapping(value = "/newGame", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value="/newBoard", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public ResponseEntity<GameBoard> newGame(@RequestBody String user) {
+	public ResponseEntity<Board> newBoard(@RequestBody String user) {
 		return ResponseEntity
 						.status(HttpStatus.ACCEPTED)
-						.body(gameService.newGame(user));
+						.body(gameService.newBoard(user));
 	}
 	
-	@RequestMapping(value = "/currentGame", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value="/currentBoard", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public ResponseEntity<GameBoard> getGame(@RequestBody String user) {
+	public ResponseEntity<Board> currentBoard(@RequestBody String user) {
 		return ResponseEntity
 						.status(HttpStatus.ACCEPTED)
-						.body(gameService.getGame(user));
+						.body(gameService.getBoard(user));
 	}
 	
-	@RequestMapping(value = "/currentGame/play", method = RequestMethod.POST)
+	@RequestMapping(value="/play", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity play(@RequestBody Move move) {
 		
-		ValidationResult validationResult = inputValidatorChain.validateInput(gameService.getGame(move.getUser()), move);
+		ValidationResult validationResult = inputValidatorChain.validateInput(gameService.getBoard(move.getUser()), move);
 		if(!validationResult.getMessage().equals(InputValidatorChain.VALID_MSG)) {
 			return ResponseEntity
 					.status(HttpStatus.BAD_REQUEST)
 					.body(validationResult);
 		}
 		
-		GameBoard played = gameService.play(move);
+		Board afterMove = gameService.play(move);
 		
-		if(played==null) {
+		if(afterMove==null) {
 			return ResponseEntity
 					.status(HttpStatus.NOT_FOUND)
 					.build();
@@ -62,7 +57,7 @@ public class GameController {
 		
 		return ResponseEntity
 				.status(HttpStatus.ACCEPTED)
-				.body(played);
+				.body(afterMove);
 		
 	}	
 }

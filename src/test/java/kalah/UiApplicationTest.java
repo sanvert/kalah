@@ -22,32 +22,17 @@ public class UiApplicationTest  {
 	private TestRestTemplate template = new TestRestTemplate();
 
 	@Test
-	public void homePageLoads() {
+	public void gamePageLoads() {
 		ResponseEntity<String> response = template.getForEntity("http://localhost:"
 				+ port + "/", String.class);
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 	}
 
 	@Test
-	public void userEndpointProtected() {
+	public void otherEndpointProtected() {
 		ResponseEntity<String> response = template.getForEntity("http://localhost:"
-				+ port + "/user", String.class);
+				+ port + "/x.html", String.class);
 		assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-	}
-
-	@Test
-	public void resourceEndpointProtected() {
-		ResponseEntity<String> response = template.getForEntity("http://localhost:"
-				+ port + "/resource", String.class);
-		assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-	}
-
-	@Test
-	public void loginSucceeds() {
-		TestRestTemplate template = new TestRestTemplate("bill", "a12");
-		ResponseEntity<String> response = template.getForEntity("http://localhost:" + port
-				+ "/user", String.class);
-		assertEquals(HttpStatus.OK, response.getStatusCode());
 	}
 
 }
