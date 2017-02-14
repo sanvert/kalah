@@ -25,54 +25,29 @@ public class GameService {
 
 	private final Striped<Lock> STRIPED_LOCK = Striped.lock(2);
 
-	public Board newBoard(String generatedBoardId) {
-		// Input based locking mechanism added
-		Board board = null;
-		try {
-			STRIPED_LOCK.get(generatedBoardId).lock();
-			board = boardFactory.generate();
-			boardRepository.insertBoard(generatedBoardId, board);
-		} finally {
-			STRIPED_LOCK.get(generatedBoardId).unlock();
-		}
-		return board;
+	public Board createNewBoard() {
+		return boardRepository.findBoard("-1");
 	}
 
-	public Board getBoard(String generatedBoardId) {
-		// Input based locking mechanism added
-		Board board = null;
-		try {
-			STRIPED_LOCK.get(generatedBoardId).lock();
-			board = boardRepository.findBoard(generatedBoardId);
-			if (board == null) {
-				board = boardFactory.generate();
-				boardRepository.insertBoard(generatedBoardId, board);
-			}
-		} finally {
-			STRIPED_LOCK.get(generatedBoardId).unlock();
-		}
-
-		return board;
+	public Board getBoard(String boardId) {
+		return boardRepository.findBoard(boardId);
 	}
 
 	public Board play(Move move) {
 		// Input based lock
 		Board currentBoard = null;
 		try {
-			STRIPED_LOCK.get(move.getUser()).lock();
-			currentBoard = boardRepository.findBoard(move.getUser());
+			STRIPED_LOCK.get(move.getBoardId()).lock();
+			currentBoard = boardRepository.findBoard(move.getBoardId());
 
 			if (currentBoard != null) {
-				boardProcessor.process(currentBoard, move.getPlayerId(),
-						move.getPitId());
-				// Insert updated board
-				boardRepository.insertBoard(move.getUser(), currentBoard);
+				boardProcessor.process(currentBoard, move.getPlayerId(), move.getPitId());
+				// Updated Board is cached
 			}
 		} finally {
-			STRIPED_LOCK.get(move.getUser()).unlock();
+			STRIPED_LOCK.get(move.getBoardId()).unlock();
 		}
 
 		return currentBoard;
 	}
-
 }

@@ -1,6 +1,7 @@
 package kalah;
 
-import kalah.controller.GameController;
+import kalah.factory.BoardFactory;
+import kalah.service.GameService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,30 +9,48 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.web.context.WebApplicationContext;
 
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {UnitTestContextConfiguration.class}, loader = AnnotationConfigContextLoader.class)
+@ContextConfiguration(classes = UiApplication.class)
+@WebAppConfiguration
 public class GameControllerTest {
 
 	private MockMvc mockMvc;
 
+	@Autowired
+	private WebApplicationContext webApplicationContext;
+
+	@Autowired
+	private GameService gameService;
+
+	@Autowired
+	private BoardFactory boardFactory;
+
 	@Before
-	public void setUp() {
-		this.mockMvc=standaloneSetup(new GameController()).build();
+	public void setUp() throws Exception {
+		this.mockMvc = webAppContextSetup(webApplicationContext).build();
 	}
 
     @Test
     public void testNewGame() throws Exception {
-    	this.mockMvc.perform(post("/api/newBoard")
-    			.accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
-        .andExpect(status().isOk())
-        .andExpect(content().contentType("application/json"));
+		MvcResult result = this.mockMvc.perform(post("/api/newBoard")
+					.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
+				.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+			.andReturn();
+
+		assertTrue(result.getResponse().getContentAsString().length()>0);
     }
 }

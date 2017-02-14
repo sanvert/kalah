@@ -1,27 +1,26 @@
 package kalah.model;
 
 public class Move {
-	private String user;
+	private String boardId;
 	private int playerId;
 	private int pitId;
 	
 	public Move() {
-		
 	}
 	
-	public Move(String user, int playerId, int pitId) {
+	public Move(String boardId, int playerId, int pitId) {
 		super();
-		this.user = user;
+		this.boardId = boardId;
 		this.playerId = playerId;
 		this.pitId = pitId;
 	}
 
-	public String getUser() {
-		return user;
+	public String getBoardId() {
+		return boardId;
 	}
 
-	public void setUser(String user) {
-		this.user = user;
+	public void setBoardId(String boardId) {
+		this.boardId = boardId;
 	}
 
 	public int getPlayerId() {

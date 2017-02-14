@@ -29,9 +29,16 @@ public class UiApplicationTest  {
 	}
 
 	@Test
-	public void otherEndpointProtected() {
+	public void resourcesProtected() {
 		ResponseEntity<String> response = template.getForEntity("http://localhost:"
 				+ port + "/x.html", String.class);
+		assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+	}
+
+	@Test
+	public void otherEndpointsProtected() {
+		ResponseEntity<String> response = template.getForEntity("http://localhost:"
+				+ port + "/api-x", String.class);
 		assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
 	}
 

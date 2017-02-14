@@ -1,19 +1,26 @@
 package kalah.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 
 import kalah.model.Section.SectionType;
 
-public class Board {
+public class Board implements Serializable {
 
+	private final String boardId;
 	private boolean gameEnded;
 	private int currentPlayerId;
 	private HashMap<Integer, Section> kalahMap;
 	private HashMap<Integer, Section[]> pitMap;
 	private LinkedHashSet<Section> boardSections;	
-	
-	public Board(int initialStoneCount) {
+
+	public Board(String boardId) {
+		this.boardId = boardId;
+	}
+
+	public Board(String boardId, int initialStoneCount) {
+		this.boardId = boardId;
 		currentPlayerId=Player._1.getId();
 		
 		kalahMap = new HashMap<Integer, Section>();
@@ -81,9 +88,7 @@ public class Board {
 		return currentPlayerId;
 	}
 	
-	public HashMap<Integer, Section> getKalahMap() {
-		return kalahMap;
-	}
+	public HashMap<Integer, Section> getKalahMap() { return kalahMap; }
 
 	public HashMap<Integer, Section[]> getPitMap() {
 		return pitMap;
@@ -91,13 +96,31 @@ public class Board {
 
 	public LinkedHashSet<Section> getBoardSections() {
 		return boardSections;
-	}	
-	
+	}
+
+	public String getBoardId() { return boardId; }
+
 	public boolean isGameEnded() {
 		return gameEnded;
 	}
 	
 	public void setGameEnded(boolean gameEnded) {
 		this.gameEnded=gameEnded;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Board board = (Board) o;
+
+		return gameEnded == board.gameEnded
+				&& boardId.equals(board.boardId);
+	}
+
+	@Override
+	public int hashCode() {
+		return boardId.hashCode();
 	}
 }

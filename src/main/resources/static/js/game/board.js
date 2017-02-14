@@ -1,10 +1,5 @@
-angular.module('game', []).controller('board', function($scope, $http) {
+angular.module("game", []).controller("board", function($scope, $http) {
 	var self = this;
-//	$http.get('/user/').then(function(response) {
-//		self.user = response.data.name;
-//		getGameFnc();
-//	});
-	
 	var config = {
         headers : {
             'Content-Type': 'application/json; charset=utf-8;'
@@ -14,59 +9,59 @@ angular.module('game', []).controller('board', function($scope, $http) {
 	self.board = {currentPlayerId: -1};
 	
 	var checkIfGameEnded = function() {
-		if(self.gameBoard.gameEnded) {
-			self.gameBoard.currentPlayerId=-1;
-			if(self.gameBoard.kalahMap['1'].numOfStones > self.gameBoard.kalahMap['2'].numOfStones)
-				self.message='PLAYER 1 WON';
-			else
-				self.message='PLAYER 2 WON';
+		if(self.board.gameEnded) {
+			self.board.currentPlayerId=-1;
+			if(self.board.kalahMap['1'].numOfStones > self.board.kalahMap['2'].numOfStones) {
+				self.message="PLAYER 1 WON! GAME ENDED";
+			} else {
+				self.message="PLAYER 2 WON! GAME ENDED";
+		    }
 		}
 	}
-	
+
+	var getCurrentBoard = function() {
+        if(self.board.currentPlayerId===-1) {
+            var data = self.boardId;
+            $http.get("/api/currentBoard", data, config)
+                .then(function successCallback(response) {
+                    self.board = response.data;
+                    self.message=" ";
+                    checkIfGameEnded();
+                }, function errorCallback(response) {
+                    self.message=response.data.message;
+                });
+        }
+    }
+
 	self.play = function(playerId, pitId) {
 		console.log(playerId + ' ' + pitId);
-		if(self.gameBoard.currentPlayerId!==-1) {
+		if(self.board.currentPlayerId!==-1) {
 			var data = {
-	            user: self.user,
+	            boardId: self.boardId,
 	            playerId: playerId,
 	            pitId: pitId
 	        };
 			
-			$http.post('/api/play', data, config)
-				.then(function successCallback(response) {
-					self.gameBoard = response.data;
-		        	self.message='';
-					checkIfGameEnded();
-				  }, function errorCallback(response) {
-					self.message=response.data.message;
-				  });	
+			$http.put("/api/play", data, config)
+                .then(function successCallback(response) {
+                    self.board = response.data;
+                    self.message='';
+                    checkIfGameEnded();
+                }, function errorCallback(response) {
+                    self.message=response.data.message;
+                });
 		}
 	}
 		
 	self.newBoard = function() {
-		var data = self.user;      
-		$http.post('/api/newBoard', data, config)
+		$http.post("/api/newBoard", config)
 			.then(function successCallback(response) {
 				self.board = response.data;
+				self.boardId = response.data.boardId;
 	        	self.message='';
-			  }, function errorCallback(response) {
+			}, function errorCallback(response) {
 				self.message=response.data.message;
-			  });	
+			});
 	}
-	
-	var getCurrentBoard = function() {
-		if(self.gameBoard.currentPlayerId===-1) {
-			var data = self.user;	            
-			$http.post('/api/currentBoard', data, config)
-				.then(function successCallback(response) {
-					self.gameBoard = response.data;
-		        	self.message=' ';
-					checkIfGameEnded();
-				  }, function errorCallback(response) {
-					self.message=response.data.message;
-				  });	
-		}
-	}
-	
-	
+
 });
