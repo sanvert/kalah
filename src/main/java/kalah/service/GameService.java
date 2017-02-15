@@ -18,9 +18,6 @@ public class GameService {
 	private BoardRepository boardRepository;
 
 	@Autowired
-	private BoardFactory boardFactory;
-
-	@Autowired
 	private BoardProcessor boardProcessor;
 
 	private final Striped<Lock> STRIPED_LOCK = Striped.lock(2);

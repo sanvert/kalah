@@ -31,12 +31,6 @@ public class GameControllerTest {
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 
-	@Autowired
-	private GameService gameService;
-
-	@Autowired
-	private BoardFactory boardFactory;
-
 	@Before
 	public void setUp() throws Exception {
 		this.mockMvc = webAppContextSetup(webApplicationContext).build();
