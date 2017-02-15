@@ -6,6 +6,9 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * Default Spring Boot application starter.
+ */
 @EnableCaching
 @SpringBootApplication
 @Controller

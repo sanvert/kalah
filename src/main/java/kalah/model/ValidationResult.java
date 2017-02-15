@@ -1,5 +1,8 @@
 package kalah.model;
 
+/**
+ * Validation object contains message for the result of move command.
+ */
 public class ValidationResult {
 
 	public String message;

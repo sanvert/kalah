@@ -1,6 +1,6 @@
 package kalah.repository;
 
-import kalah.factory.BoardFactory;
+import kalah.model.BoardFactory;
 import kalah.model.Board;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -8,12 +8,20 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Repository keeps the game boards.
+ * Boards are kept into ehcache cache.
+ */
 @Repository
 @CacheConfig(cacheNames = "boards")
 public class BoardRepository {
 
+	private final BoardFactory boardFactory;
+
 	@Autowired
-	private BoardFactory boardFactory;
+	public BoardRepository(BoardFactory boardFactory) {
+		this.boardFactory = boardFactory;
+	}
 
 	@Cacheable
 	public Board findBoard(String boardId) {

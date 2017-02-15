@@ -1,4 +1,8 @@
 logging:
   level:
     org.springframework.security: DEBUG
+
 initialStoneCount: 6
+
+server:
+  compression.enabled:true

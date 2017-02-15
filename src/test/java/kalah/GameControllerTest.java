@@ -1,7 +1,5 @@
 package kalah;
 
-import kalah.factory.BoardFactory;
-import kalah.service.GameService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

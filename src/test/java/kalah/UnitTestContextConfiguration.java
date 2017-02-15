@@ -1,7 +1,7 @@
 package kalah;
 
 import kalah.controller.GameController;
-import kalah.factory.BoardFactory;
+import kalah.model.BoardFactory;
 import kalah.processor.BoardProcessor;
 import kalah.repository.BoardRepository;
 import kalah.service.GameService;
@@ -28,15 +28,15 @@ public class UnitTestContextConfiguration {
 	public GameController gameController() {
 		return new GameController();
 	}
-	
-	@Bean
-	public BoardRepository boardRepository() { return new BoardRepository(); }
-	
+
 	@Bean
 	public BoardFactory boardFactory() {
 		return new BoardFactory();
 	}
-	
+
+	@Bean
+	public BoardRepository boardRepository() { return new BoardRepository(boardFactory()); }
+
 	@Bean
 	public BoardProcessor boardProcessor() {
 		return new BoardProcessor();

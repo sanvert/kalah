@@ -3,6 +3,9 @@ package kalah.validator;
 import kalah.model.Board;
 import kalah.model.Move;
 
+/**
+ * Abstract validator for input validation chain implementations.
+ */
 public abstract class GameplayValidator {
 	protected GameplayValidator nextValidator;
 	protected String validInputMsg;

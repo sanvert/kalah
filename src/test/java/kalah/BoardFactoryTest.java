@@ -1,6 +1,6 @@
 package kalah;
 
-import kalah.factory.BoardFactory;
+import kalah.model.BoardFactory;
 import kalah.model.Board;
 import org.junit.Test;
 import org.junit.runner.RunWith;

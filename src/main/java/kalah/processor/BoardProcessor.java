@@ -8,9 +8,19 @@ import kalah.model.Section;
 
 import org.springframework.stereotype.Component;
 
+/**
+ *
+ * Responsible from processing moves on game board.
+ */
 @Component
 public class BoardProcessor {
 
+	/**
+	 * Process board by spreading stones in specified pit of player.
+	 * @param board
+	 * @param playerId
+	 * @param pitId
+	 */
 	public void process(Board board, int playerId, int pitId) {
 		Section[] pitArr = board.getPitMap().get(playerId);
 		int numOfStones = pitArr[pitId].getNumOfStones();
@@ -35,7 +45,12 @@ public class BoardProcessor {
 		
 		checkIfGameEnded(board);
 	}
-	
+
+	/**
+	 * Apply two special operations after a move operation is applied.
+	 * @param board
+	 * @param lastSection
+	 */
 	private void checkLastProcessedSectionAndUpdateForNewTurn(Board board, Section lastSection) {
 		if(lastSection.isKalah()) {
 			// Check the last added seed is added into kalah and if so give another turn for current user.
@@ -60,7 +75,11 @@ public class BoardProcessor {
 			board.changeCurrentPlayer();
 		
 	}
-	
+
+	/**
+	 * Checks if the current game is ended or not.
+	 * @param board
+	 */
 	private void checkIfGameEnded(Board board) {
 		if(board.getPlayerStoneCountInPits(Player._1.getId())==0
 				&& board.getPlayerStoneCountInPits(Player._2.getId())==0)

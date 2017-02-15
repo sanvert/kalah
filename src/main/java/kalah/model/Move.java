@@ -1,5 +1,8 @@
 package kalah.model;
 
+/**
+ * Player move is represented by this object.
+ */
 public class Move {
 	private String boardId;
 	private int playerId;

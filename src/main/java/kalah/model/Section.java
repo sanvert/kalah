@@ -2,6 +2,9 @@ package kalah.model;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Two different section types are found in game board namely Kalah and Pit.
+ */
 public class Section {
 
 	public enum SectionType {

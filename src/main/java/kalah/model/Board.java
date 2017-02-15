@@ -6,6 +6,9 @@ import java.util.LinkedHashSet;
 
 import kalah.model.Section.SectionType;
 
+/**
+ * Board object encapsulates all necessary information in.
+ */
 public class Board implements Serializable {
 
 	private final String boardId;

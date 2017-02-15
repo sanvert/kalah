@@ -1,7 +1,6 @@
 package kalah.service;
 
 import com.google.common.util.concurrent.Striped;
-import kalah.factory.BoardFactory;
 import kalah.model.Board;
 import kalah.model.Move;
 import kalah.processor.BoardProcessor;
@@ -11,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.concurrent.locks.Lock;
 
+/**
+ * Service instance providing operations to game controller.
+ */
 @Service
 public class GameService {
 
