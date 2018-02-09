@@ -19,7 +19,15 @@ public class BoardFactory {
 	 * @return {@link Board}
 	 */
 	public Board generate() {
-		String boardId = UUID.randomUUID().toString();
+		return new Board(UUID.randomUUID().toString(), initialStoneCount);
+	}
+
+	/**
+	 * Creates a new board object.
+	 * @param boardId given
+	 * @return {@link Board}
+	 */
+	public Board generate(String boardId) {
 		return new Board(boardId, initialStoneCount);
 	}
 	

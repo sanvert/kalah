@@ -1,5 +1,6 @@
 package kalah;
 
+import kalah.configuration.UnitTestContextConfiguration;
 import kalah.model.BoardFactory;
 import kalah.model.Board;
 import org.junit.Test;

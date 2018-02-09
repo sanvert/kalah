@@ -1,66 +1,64 @@
 angular.module("game", []).controller("board", function($scope, $http) {
-	var self = this;
 	var config = {
         headers : {
             'Content-Type': 'application/json; charset=utf-8;'
         }
     };
 	
-	self.board = {currentPlayerId: -1};
+	$scope.board = {currentPlayerId: -1};
 	
 	var checkIfGameEnded = function() {
-		if(self.board.gameEnded) {
-			self.board.currentPlayerId=-1;
-			if(self.board.kalahMap['1'].numOfStones > self.board.kalahMap['2'].numOfStones) {
-				self.message="PLAYER 1 WON! GAME ENDED";
+		if($scope.board.gameEnded) {
+			$scope.board.currentPlayerId=-1;
+			if($scope.board.kalahMap['1'].numOfStones > $scope.board.kalahMap['2'].numOfStones) {
+				$scope.message="PLAYER 1 WON! GAME ENDED";
 			} else {
-				self.message="PLAYER 2 WON! GAME ENDED";
+				$scope.message="PLAYER 2 WON! GAME ENDED";
 		    }
 		}
 	}
 
-	var getCurrentBoard = function() {
+	$scope.getCurrentBoard = function() {
         if(self.board.currentPlayerId===-1) {
-            var data = self.boardId;
-            $http.get("/api/currentBoard", data, config)
+            $http.get("/api/currentBoard/" + $scope.boardId, config)
                 .then(function successCallback(response) {
-                    self.board = response.data;
-                    self.message=" ";
+                    $scope.board = response.data;
+                    $scope.message=" ";
                     checkIfGameEnded();
                 }, function errorCallback(response) {
-                    self.message=response.data.message;
+                    $scope.message=response.data.message;
                 });
         }
     }
 
-	self.play = function(playerId, pitId) {
-		console.log(playerId + ' ' + pitId);
-		if(self.board.currentPlayerId!==-1) {
+	$scope.play = function(playerId, pitId) {
+		console.log($scope.boardId);
+		if($scope.board.currentPlayerId!==-1) {
 			var data = {
-	            boardId: self.boardId,
+	            boardId: $scope.boardId,
 	            playerId: playerId,
 	            pitId: pitId
 	        };
 			
 			$http.put("/api/play", data, config)
                 .then(function successCallback(response) {
-                    self.board = response.data;
-                    self.message='';
+                    $scope.board = response.data;
+                    $scope.message='';
                     checkIfGameEnded();
                 }, function errorCallback(response) {
-                    self.message=response.data.message;
+                    $scope.message=response.data.message;
                 });
 		}
 	}
 		
-	self.newBoard = function() {
+	$scope.newBoard = function() {
 		$http.post("/api/newBoard", config)
 			.then(function successCallback(response) {
-				self.board = response.data;
-				self.boardId = response.data.boardId;
-	        	self.message='';
+				$scope.board = response.data;
+				$scope.boardId = response.data.boardId;
+	        	$scope.message='';
 			}, function errorCallback(response) {
-				self.message=response.data.message;
+				$scope.message=response.data.message;
 			});
 	}
 

@@ -8,6 +8,7 @@ import kalah.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
 import java.util.concurrent.locks.Lock;
 
 /**
@@ -16,16 +17,19 @@ import java.util.concurrent.locks.Lock;
 @Service
 public class GameService {
 
-	@Autowired
-	private BoardRepository boardRepository;
+	private final BoardRepository boardRepository;
+	private final BoardProcessor boardProcessor;
 
 	@Autowired
-	private BoardProcessor boardProcessor;
+	public GameService(BoardRepository boardRepository, BoardProcessor boardProcessor) {
+		this.boardRepository = boardRepository;
+		this.boardProcessor = boardProcessor;
+	}
 
 	private final Striped<Lock> STRIPED_LOCK = Striped.lock(2);
 
 	public Board createNewBoard() {
-		return boardRepository.findBoard("-1");
+		return boardRepository.findBoard(UUID.randomUUID().toString());
 	}
 
 	public Board getBoard(String boardId) {

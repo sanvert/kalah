@@ -13,22 +13,23 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Main controller for game operations.
  */
-@RestController()
+@RestController
 @RequestMapping("/api")
 public class GameController {
 
-	@Autowired
-	private GameService gameService;
-	
-	@Autowired
-	private InputValidatorChain inputValidatorChain;
+	private final GameService gameService;
+	private final InputValidatorChain inputValidatorChain;
 
+	@Autowired
+	public GameController(GameService gameService, InputValidatorChain inputValidatorChain) {
+		this.gameService = gameService;
+		this.inputValidatorChain = inputValidatorChain;
+	}
 	/**
 	 * Creates a new game board.
 	 * @return ResponseEntity wrapping Board.
 	 */
-	@RequestMapping(value="/newBoard", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	@ResponseBody
+	@PostMapping(value="/newBoard")
 	public ResponseEntity<Board> newBoard() {
 		Board board = gameService.createNewBoard();
 
@@ -42,9 +43,8 @@ public class GameController {
 	 * @param boardId
 	 * @return ResponseEntity wrapping Board.
 	 */
-	@RequestMapping(value="/currentBoard", method = RequestMethod.GET, produces = "application/json")
-	@ResponseBody
-	public ResponseEntity<Board> currentBoard(@RequestBody String boardId) {
+	@GetMapping(value="/currentBoard/{boardId}")
+	public ResponseEntity<Board> currentBoard(@PathVariable String boardId) {
 		return ResponseEntity
 						.status(HttpStatus.OK)
 						.body(gameService.getBoard(boardId));
@@ -55,8 +55,7 @@ public class GameController {
 	 * @param move
 	 * @return ValidationResult
 	 */
-	@RequestMapping(value="/play", method = RequestMethod.PUT)
-	@ResponseBody
+	@PutMapping(value="/play")
 	public ResponseEntity play(@RequestBody Move move) {
 		
 		ValidationResult validationResult = inputValidatorChain.validateInput(gameService.getBoard(move.getBoardId()), move);

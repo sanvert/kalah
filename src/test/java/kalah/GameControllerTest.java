@@ -30,7 +30,7 @@ public class GameControllerTest {
 	private WebApplicationContext webApplicationContext;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		this.mockMvc = webAppContextSetup(webApplicationContext).build();
 	}
 
