@@ -29,7 +29,7 @@ public class BoardProcessor {
 		boolean startProcess = false;
 		Section lastSection = null;
 		//Iterate over board with guava cyclic iterator to spread stones over pits.
-		Iterator<Section> cyclicIterator = jersey.repackaged.com.google.common.collect.Iterators.cycle(board.getBoardSections());
+		Iterator<Section> cyclicIterator = com.google.common.collect.Iterators.cycle(board.getBoardSections());
 		while(numOfStones>0) {
 			lastSection = cyclicIterator.next();
 			if(startProcess) {

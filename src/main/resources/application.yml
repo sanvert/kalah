@@ -5,4 +5,7 @@ logging:
 initialStoneCount: 6
 
 server:
-  compression.enabled:true
+  compression.enabled: true
+  undertow.accesslog.enabled: true
+  undertow.accesslog.dir: target/logs
+  undertow.accesslog.pattern: combined
